@@ -1,0 +1,42 @@
+import React, { useState } from "react";
+
+const TodoForm = () => {
+  const [todoInput, setTodoInput] = useState("");
+  const submitHandler = () => {};
+  return (
+    <section className="container w-2/4 mx-auto">
+      <h1 className="text-center text-3xl font-bold">To-Do App</h1>
+      <form onSubmit={submitHandler}>
+        <div className="relative mb-2">
+          <label
+            htmlFor="Title"
+            className="leading-7 text-sm md:text-lg font-bold text-gray-600"
+          >
+            Add To-Do
+          </label>
+          <input
+            type="text"
+            id="Title"
+            required
+            placeholder="Add your todo"
+            name="Title"
+            onChange={(e) => {
+              setTodoInput(e.target.value);
+            }}
+            value={todoInput}
+            className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700  px-3 leading-8 transition-colors duration-200 ease-in-out"
+          />
+        </div>
+
+        <button
+          type="submit"
+          className="text-white flex mx-auto bg-indigo-500 border-0 py-1 px-8 focus:outline-none hover:bg-indigo-600 rounded"
+        >
+          Add
+        </button>
+      </form>
+    </section>
+  );
+};
+
+export default TodoForm;
