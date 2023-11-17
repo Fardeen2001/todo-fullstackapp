@@ -18,7 +18,7 @@ const TodoForm = () => {
             type="text"
             id="Title"
             required
-            placeholder="Add your todo"
+            placeholder="Enter new todo"
             name="Title"
             onChange={(e) => {
               setTodoInput(e.target.value);
