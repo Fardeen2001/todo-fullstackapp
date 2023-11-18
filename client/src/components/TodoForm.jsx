@@ -1,8 +1,14 @@
 import React, { useState } from "react";
-
+import { addNewTodo } from "../redux/action";
+import { useDispatch } from "react-redux";
 const TodoForm = () => {
   const [todoInput, setTodoInput] = useState("");
-  const submitHandler = () => {};
+  const dispatch = useDispatch();
+  const submitHandler = (e) => {
+    e.preventDefault();
+    dispatch(addNewTodo(todoInput));
+    setTodoInput("");
+  };
   return (
     <section className="container w-2/4 mx-auto">
       <h1 className="text-center text-3xl font-bold">To-Do App</h1>
