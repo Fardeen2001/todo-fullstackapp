@@ -8,7 +8,7 @@ const PORT = 8000;
 app.use(
   cors({
     origin: "https://todo-fullstackapp-fardeen.vercel.app",
-    methods: ["POST", "GET"],
+    methods: ["POST", "GET", "DELETE", "PUT"],
     credentials: true,
   })
 );
