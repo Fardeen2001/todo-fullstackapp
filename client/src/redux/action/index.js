@@ -9,7 +9,7 @@ import {
   TOGGLEToDo,
   UPDATEToDo,
 } from "./type";
-const API_URL = "http://localhost:8000";
+const API_URL = "https://todo-fullstackapp.vercel.app";
 export const addNewTodo = (data) => async (dispatch) => {
   try {
     const res = await axios.post(`${API_URL}/todos`, { data });
