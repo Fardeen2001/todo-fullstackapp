@@ -28,7 +28,7 @@ const Login = () => {
         setTimeout(() => {
           setEmail("");
           setPassword("");
-          navigate("/");
+          navigate("/", { replace: true });
         }, 2000);
       } else {
         toast.error("Invalid Credentials", {
