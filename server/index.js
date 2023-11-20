@@ -5,7 +5,13 @@ import route from "./routes/Route.js";
 import authRoute from "./routes/authRoute.js";
 const app = express();
 const PORT = 8000;
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://todo-fullstackapp-fardeen.vercel.app",
+    methods: ["POST", "GET"],
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/", route);
