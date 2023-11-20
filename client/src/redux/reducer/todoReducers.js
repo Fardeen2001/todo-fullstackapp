@@ -15,6 +15,8 @@ export const todoReducers = (state = [], action) => {
           ? { ...item, data: action.payload.data }
           : item
       );
+    case actionTypes.DELETEToDo:
+      return state.filter((item) => item._id !== action.payload._id);
     default:
       return state;
   }

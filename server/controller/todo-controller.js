@@ -45,3 +45,12 @@ export const updateTodo = async (request, response) => {
     return response.status(500).json(error.message);
   }
 };
+export const deleteTodo = async (request, response) => {
+  try {
+    const todos = await todo.findByIdAndDelete({ _id: request.params.id });
+
+    return response.status(200).json(todos);
+  } catch (error) {
+    return response.status(500).json(error.message);
+  }
+};

@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { getAllTodo, toggleTodo, updateTodo } from "../redux/action";
+import {
+  deleteTodo,
+  getAllTodo,
+  toggleTodo,
+  updateTodo,
+} from "../redux/action";
 import { useDispatch, useSelector } from "react-redux";
 import { FaPen } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
@@ -25,12 +30,18 @@ const TodoList = () => {
     });
   };
 
-  const editedTodoHandler = (e, id, done) => {
+  const editedTodoHandler = (e, id, done, index) => {
     e.preventDefault();
-    setEditTodos(!editTodos);
+    setEditTodos((prevEditTodos) => {
+      const newEditTodos = [...prevEditTodos];
+      newEditTodos[index] = !newEditTodos[index];
+      return newEditTodos;
+    });
+
     dispatch(updateTodo(id, editTextTodo));
     done && dispatch(toggleTodo(id));
   };
+
   return (
     <section className="text-gray-600 body-font">
       <div className="container px-5 py-2 mx-auto">
@@ -75,7 +86,7 @@ const TodoList = () => {
                     <form
                       className="w-full flex items-center"
                       onSubmit={(e) => {
-                        editedTodoHandler(e, item._id, item.done);
+                        editedTodoHandler(e, item._id, item.done, index);
                       }}
                     >
                       <input
@@ -106,7 +117,12 @@ const TodoList = () => {
                       />
                     )}
 
-                    <MdDelete className="cursor-pointer" />
+                    <MdDelete
+                      className="cursor-pointer"
+                      onClick={() => {
+                        dispatch(deleteTodo(item._id));
+                      }}
+                    />
                   </div>
                 </div>
               </div>
