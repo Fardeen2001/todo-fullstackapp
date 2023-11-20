@@ -1,49 +1,37 @@
 import { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
+import { useDispatch } from "react-redux";
+import { signup } from "../../redux/action";
 
 const SignUp = () => {
   const [name, setname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("http://localhost:3000/api/signup", {
-        method: "POST",
-        body: JSON.stringify({
-          name: name,
-          email: email,
-          password: password,
-        }),
-        headers: { "Content-Type": "application/json" },
-        next: { revalidate: 0 },
-        cache: "no-cache",
+      dispatch(signup({ name, email, password }));
+      toast.success("Your Account Created successfully", {
+        position: "bottom-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
       });
-      if (!res.ok) {
-        throw new Error("Invaild while signup");
-      }
-      await res.json();
-      if (res.ok) {
-        toast.success("Your Account Created successfully", {
-          position: "bottom-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
 
-        setTimeout(() => {
-          //   router.push("/login");
-          setname("");
-          setEmail("");
-          setPassword("");
-        }, 2000);
-      }
+      setTimeout(() => {
+        navigate("/login", { replace: true });
+        setname("");
+        setEmail("");
+        setPassword("");
+      }, 2000);
     } catch (error) {
       console.error(error.message);
       toast.error("invalid while sign up", {
@@ -77,7 +65,9 @@ const SignUp = () => {
       />
       <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <h1 className="text-3xl text-black">To-Do App</h1>
+          <h1 className="text-3xl text-black text-center font-bold">
+            To-Do App
+          </h1>
           <h2 className="mt-2 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
             Sign up to your account
           </h2>
@@ -165,7 +155,7 @@ const SignUp = () => {
           <p className="mt-2 text-center text-sm text-gray-500">
             Already a member?
             <Link
-              href={"/login"}
+              to={"/login"}
               className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
             >
               Login

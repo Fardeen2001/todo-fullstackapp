@@ -3,6 +3,9 @@ import {
   AddNewToDo,
   DELETEToDo,
   GETALLToDo,
+  LOGIN_USER,
+  SIGNUP_USER,
+  TOGGLETabs,
   TOGGLEToDo,
   UPDATEToDo,
 } from "./type";
@@ -45,5 +48,34 @@ export const deleteTodo = (id) => async (dispatch) => {
     dispatch({ type: DELETEToDo, payload: res.data });
   } catch (error) {
     console.log("error while deleting todo from database", error.message);
+  }
+};
+export const toggleTabs = (tab) => async (dispatch) => {
+  try {
+    dispatch({ type: TOGGLETabs, selected: tab });
+  } catch (error) {
+    console.log("error while toggling tabs", error.message);
+  }
+};
+export const signup = (data) => async (dispatch) => {
+  try {
+    const res = await axios.post(`${API_URL}/signup`, data);
+    dispatch({ type: SIGNUP_USER, payload: res.data });
+  } catch (error) {
+    console.log("error while sign up", error.message);
+  }
+};
+export const login = (data) => async (dispatch) => {
+  try {
+    const res = await axios.post(`${API_URL}/login`, data);
+    dispatch({
+      type: LOGIN_USER,
+      payload: { token: res.data.token, user: data.email },
+    });
+    localStorage.setItem("token", res.data.token);
+    return res.data.token;
+  } catch (error) {
+    console.log("error while login", error.message);
+    throw error;
   }
 };

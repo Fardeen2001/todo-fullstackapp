@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { addNewTodo } from "../redux/action";
 import { useDispatch } from "react-redux";
-const TodoForm = () => {
+import { Link } from "react-router-dom";
+const TodoForm = ({ token }) => {
   const [todoInput, setTodoInput] = useState("");
   const dispatch = useDispatch();
+
   const submitHandler = (e) => {
     e.preventDefault();
     dispatch(addNewTodo(todoInput));
@@ -33,13 +35,24 @@ const TodoForm = () => {
             className="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700  px-3 leading-8 transition-colors duration-200 ease-in-out"
           />
         </div>
+        {token && (
+          <button
+            type="submit"
+            className="text-white flex mx-auto bg-indigo-500 border-0 py-1 px-8 focus:outline-none hover:bg-indigo-600 rounded"
+          >
+            ADD
+          </button>
+        )}
 
-        <button
-          type="submit"
-          className="text-white flex mx-auto bg-indigo-500 border-0 py-1 px-8 focus:outline-none hover:bg-indigo-600 rounded"
-        >
-          Add
-        </button>
+        {!token && (
+          <Link
+            className="text-white flex mx-auto bg-indigo-500 border-0 py-1 px-5
+        focus:outline-none hover:bg-indigo-600 rounded w-20 text-center items-center"
+            to={"/signup"}
+          >
+            Login
+          </Link>
+        )}
       </form>
     </section>
   );

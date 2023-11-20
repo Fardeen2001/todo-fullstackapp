@@ -2,12 +2,14 @@ import express from "express";
 import DbConnection from "./database/db.js";
 import cors from "cors";
 import route from "./routes/Route.js";
+import authRoute from "./routes/authRoute.js";
 const app = express();
 const PORT = 8000;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use("/", route);
+app.use("/", authRoute);
 
 DbConnection();
 app.listen(PORT, () => {

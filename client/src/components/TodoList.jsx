@@ -15,8 +15,13 @@ const TodoList = () => {
   const [editTodos, setEditTodos] = useState([]);
   const [editTextTodo, setEditTextTodo] = useState("");
   const dispatch = useDispatch();
-  const todos = useSelector((state) => state.todos);
-
+  let todos = useSelector((state) => state.todos);
+  const currentTab = useSelector((state) => state.currentTab);
+  if (currentTab === "ACTIVE_TODOS") {
+    todos = todos.filter((todo) => !todo.done);
+  } else if (currentTab === "DONE_TODOS") {
+    todos = todos.filter((todo) => todo.done);
+  }
   useEffect(() => {
     dispatch(getAllTodo());
     setEditTodos(Array(todos.length).fill(false));

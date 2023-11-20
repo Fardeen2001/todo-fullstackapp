@@ -1,7 +1,14 @@
 import React, { useState } from "react";
+import { TABS } from "../redux/action/type";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleTabs } from "../redux/action";
+import { Link, useNavigate } from "react-router-dom";
 
-const Navbar = () => {
+const Navbar = ({ token }) => {
   const [isOpen, setIsOpen] = useState();
+  const dispatch = useDispatch();
+  const currentTab = useSelector((state) => state.currentTab);
+  const navigate = useNavigate();
   return (
     <>
       <nav className="flex items-center justify-between flex-wrap p-4 bg-blue-400">
@@ -35,35 +42,42 @@ const Navbar = () => {
           }`}
         >
           <div className="text-lg text-white font-bold lg:flex-grow mx-auto ">
-            <a
-              href="/"
-              className="block mt-4 lg:inline-block lg:mt-0 text-white-200 mr-4 hover:text-indigo-500"
-            >
-              Home
-            </a>
-            <a
-              href="/"
-              className="block mt-4 lg:inline-block lg:mt-0 text-white-200 mr-4 hover:text-indigo-500"
-            >
-              All task
-            </a>
-            <a
-              href="/"
-              className="block mt-4 lg:inline-block lg:mt-0 text-white-200 mr-4 hover:text-indigo-500"
-            >
-              Active task
-            </a>
-            <a
-              href="/"
-              className="block mt-4 lg:inline-block lg:mt-0 text-white-200 mr-4 hover:text-indigo-500"
-            >
-              Completed Task
-            </a>
+            {TABS.map((tab, index) => (
+              <button
+                key={index}
+                className={`block mt-4 lg:inline-block lg:mt-0 text-white-200 mr-4 hover:text-indigo-500 ${
+                  currentTab === tab
+                    ? "border-b-4 border-b-indigo-600 text-indigo-600"
+                    : ""
+                }`}
+                onClick={() => {
+                  dispatch(toggleTabs(tab));
+                }}
+              >
+                {tab}
+              </button>
+            ))}
           </div>
           <div>
-            <button className="inline-flex items-center bg-indigo-500 border-0 py-2 px-4 text-white focus:outline-none hover:bg-indigo-600 rounded text-lg">
-              Click Me
-            </button>
+            {token && (
+              <button
+                onClick={() => {
+                  localStorage.removeItem("token");
+                  navigate("/signup", { replace: true });
+                }}
+                className="inline-flex items-center bg-indigo-500 border-0 py-2 px-4 text-white focus:outline-none hover:bg-indigo-600 rounded text-lg"
+              >
+                Logout
+              </button>
+            )}
+            {!token && (
+              <Link
+                to={"/signup"}
+                className="inline-flex items-center bg-indigo-500 border-0 py-2 px-4 text-white focus:outline-none hover:bg-indigo-600 rounded text-lg"
+              >
+                Signup
+              </Link>
+            )}
           </div>
         </div>
       </nav>

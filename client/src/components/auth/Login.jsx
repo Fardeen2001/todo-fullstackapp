@@ -2,44 +2,33 @@ import { Link } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { login } from "../../redux/action";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
   const loginHandler = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("http://localhost:3000/api/login", {
-        method: "POST",
-        body: JSON.stringify({
-          email: email,
-          password: password,
-        }),
-        headers: { "Content-Type": "application/json" },
+      const token = dispatch(login({ email, password }));
+      console.log("Token:", token);
+      toast.success("Logged In successfully", {
+        position: "bottom-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "colored",
       });
-      const data = await res.json();
-      console.log(data);
-      if (!res.ok) {
-        throw new Error(data.error);
-      }
-      if (res.ok) {
-        localStorage.setItem("token", data.token);
-        toast.success("Logged In successfully", {
-          position: "bottom-right",
-          autoClose: 2000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "colored",
-        });
 
-        setTimeout(() => {
-          setEmail("");
-          setPassword("");
-          //   route.push("/");
-        }, 2000);
-      }
+      setTimeout(() => {
+        setEmail("");
+        setPassword("");
+        //   route.push("/");
+      }, 2000);
     } catch (error) {
       console.error(error.message);
       toast.error(error.message, {
@@ -72,7 +61,9 @@ const Login = () => {
       />
       <div className="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <h1 className="text-3xl text-black">To-Do App</h1>
+          <h1 className="text-3xl text-black text-center font-bold">
+            To-Do App
+          </h1>
           <h2 className="mt-5 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
             Sign in to your account
           </h2>
@@ -113,7 +104,7 @@ const Login = () => {
                 </label>
                 <div className="text-sm">
                   <Link
-                    href={"/forgot"}
+                    to={"/forgot"}
                     className="font-semibold text-indigo-600 hover:text-indigo-500"
                   >
                     Forgot password?
@@ -149,7 +140,7 @@ const Login = () => {
           <p className="mt-5 text-center text-sm text-gray-500">
             Not a member?
             <Link
-              href={"/signup"}
+              to={"/signup"}
               className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
             >
               SignUp
