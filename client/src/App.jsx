@@ -4,9 +4,13 @@ import TodoList from "./components/TodoList";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import SignUp from "./components/auth/Signup";
 import Login from "./components/auth/login";
+import { useEffect, useState } from "react";
 function App() {
-  const token = !!localStorage.getItem("token") || false;
-
+  const [token, setToken] = useState(false);
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    setToken(!!storedToken);
+  }, []);
   return (
     <Router>
       <Routes>

@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useState } from "react";
@@ -8,27 +8,42 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const loginHandler = async (e) => {
     e.preventDefault();
     try {
-      const token = dispatch(login({ email, password }));
-      console.log("Token:", token);
-      toast.success("Logged In successfully", {
-        position: "bottom-right",
-        autoClose: 2000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
+      const data = await dispatch(login({ email, password }));
+      if (!!data) {
+        toast.success("Logged In successfully", {
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
 
-      setTimeout(() => {
+        setTimeout(() => {
+          setEmail("");
+          setPassword("");
+          navigate("/");
+        }, 2000);
+      } else {
+        toast.error("Invalid Credentials", {
+          position: "bottom-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
         setEmail("");
         setPassword("");
-        //   route.push("/");
-      }, 2000);
+      }
     } catch (error) {
       console.error(error.message);
       toast.error(error.message, {

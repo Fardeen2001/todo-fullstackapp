@@ -70,12 +70,12 @@ export const login = (data) => async (dispatch) => {
     const res = await axios.post(`${API_URL}/login`, data);
     dispatch({
       type: LOGIN_USER,
-      payload: { token: res.data.token, user: data.email },
+      payload: { token: res.data },
     });
-    localStorage.setItem("token", res.data.token);
-    return res.data.token;
+    localStorage.setItem("token", res.data);
+    return res.data;
   } catch (error) {
     console.log("error while login", error.message);
-    throw error;
+    return error;
   }
 };

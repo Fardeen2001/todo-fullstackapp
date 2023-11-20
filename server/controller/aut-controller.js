@@ -1,5 +1,6 @@
 import userAuth from "../model/AuthModel.js";
 import CryptoJS from "crypto-js";
+import jwt from "jsonwebtoken";
 
 export const signupUser = async (request, response) => {
   try {
@@ -17,10 +18,9 @@ export const loginUser = async (request, response) => {
     const { email, password } = request.body;
     const user = await userAuth.findOne({ email: email });
     if (user) {
-      const bytes = CryptoJS.AES.decrypt(user.password, "fardeen9113");
+      const bytes = CryptoJS.AES.decrypt(user.password, "fardeen");
       const originalText = bytes.toString(CryptoJS.enc.Utf8);
-      console.log(user, email, password);
-      if (email === user.email && password === originalText) {
+      if (password === originalText && email === user.email) {
         const token = jwt.sign(
           { email: user.email, name: user.name },
           "fardeen9113",
